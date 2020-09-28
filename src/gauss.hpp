@@ -5,7 +5,29 @@
 namespace gauss
 {
     typedef std::vector<double> vec;
+    typedef std::vector<std::vector<double> > matrix;
 
+    /**
+     * Function applies cross product to two 3d vectors. u x v = w
+     *
+     * @param row Number of row for the matrix.
+     * @param col Number of column for the matrix.
+     * @param val Value to set to every element.
+     * @return Created matrix with row and column size.
+     */
+    matrix CreateMatrix(int row, int col, double val = 0)
+    {
+        matrix m(row);
+        for (size_t i = 0; i < m.size(); i++)
+            m[i].resize(col, val);
+
+        return m;
+    }
+
+    matrix CreateMatrix(size_t row, size_t col, double val = 0)
+    {
+        return CreateMatrix((int)row, (int)col, val);
+    }
     /**
      * Function applies cross product to two 3d vectors. u x v = w 
      *
@@ -42,6 +64,33 @@ namespace gauss
                 k += u[i] * v[i];
         }
         return k;
+    }
+
+    /*
+    
+    */
+    matrix MatrixMulti(matrix A, matrix B)
+    {
+        matrix C;
+        if(A.empty() || B.empty())
+            return C;
+
+        if(A[0].empty() || A[0].size() != B.size())
+            return C;
+
+        C = CreateMatrix(A.size(), B[0].size());
+        for (size_t i = 0; i < A.size(); i++)
+        {
+            for (size_t jj = 0; jj < C[i].size(); jj++)
+            {
+                double v = 0;
+                for (size_t j = 0; j < A[i].size(); j++)
+                    v += A[i][j] * B[j][jj];
+                C[i][jj] = v;
+            }
+        }
+
+        return C;
     }
 }
 
