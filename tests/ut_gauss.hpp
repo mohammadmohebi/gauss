@@ -2,6 +2,7 @@
 #define _UT_GAUSS_HPP_
 #include <cassert>
 #include <sstream>
+#include <chrono>
 
 #include "src/gauss.hpp"
 
@@ -101,6 +102,28 @@ namespace gauss
 
         }
 
+        void Test_Speed()
+        {
+            std::cout << "__Speed__:" << std::endl;
+            std::chrono::steady_clock::time_point begin, end;
+
+            begin = std::chrono::steady_clock::now();
+            auto A = Matrix(200, 100, 2.5);
+            end = std::chrono::steady_clock::now();
+            std::cout << "    Create Matrix A: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms" << std::endl;
+
+            begin = std::chrono::steady_clock::now();
+            auto B = Matrix(100, 200, 2.5);
+            end = std::chrono::steady_clock::now();
+            std::cout << "    Create Matrix B: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms" << std::endl;
+
+            begin = std::chrono::steady_clock::now();
+            auto C = MatrixMulti(A, B);
+            end = std::chrono::steady_clock::now();
+
+            std::cout << "    Matrix multiplication: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms" << std::endl;
+        }
+
         void TestAll()
         {
             Test_CreateMatrix();
@@ -113,6 +136,9 @@ namespace gauss
             std::cout << std::endl;
 
             Test_MatrixMulti();
+            std::cout << std::endl;
+
+            Test_Speed();
             std::cout << std::endl;
         }
     }
