@@ -13,7 +13,7 @@ namespace gauss
         {
             std::cout << "CreateMatrix:" << std::endl;
 
-            auto m = CreateMatrix(12, 10, 55);
+            auto m = Matrix(12, 10, 55);
             assert((m.size() == 12) && "CreateMatrix : wrong row size");
             std::cout << "    PASS: row size" << std::endl;
 

@@ -13,9 +13,9 @@ namespace gauss
      * @param row Number of row for the matrix.
      * @param col Number of column for the matrix.
      * @param val Value to set to every element.
-     * @return Created matrix with row and column size.
+     * @return Matrix with row and col size.
      */
-    matrix CreateMatrix(int row, int col, double val = 0)
+    matrix Matrix(int row, int col, double val = 0)
     {
         matrix m(row);
         for (size_t i = 0; i < m.size(); i++)
@@ -24,10 +24,45 @@ namespace gauss
         return m;
     }
 
-    matrix CreateMatrix(size_t row, size_t col, double val = 0)
+    matrix Matrix(size_t row, size_t col, double val = 0)
     {
-        return CreateMatrix((int)row, (int)col, val);
+        return Matrix((int)row, (int)col, val);
     }
+
+    /**
+     * Function that create an identity matrix of size n
+     *
+     * @param n Size of matrix (n x n square matrix).
+     * @return n x n square matrix wiht ones on the main diagonal.
+     */
+    matrix MatrixI(int n)
+    {
+        matrix m = Matrix(n, n);
+        for (size_t i = 0; i < n; i++)
+            m[i][i] = 1;
+        return m;
+    }
+
+    matrix MatrixI(size_t n)
+    {
+        return MatrixI((int)n);
+    }
+
+    /**
+    * Function that create a diagonal matrix with values given as an array.
+    *
+    * @param d Array of values to use for the diagonal (d.size() x d.size() square matrix)
+    * @return d.size() x d.size() square matrix with diagonal 
+    * having the same values as passed as an array.
+    */
+    matrix MatrixD(std::vector<double> d)
+    {
+        matrix m = Matrix(d.size(), d.size());
+        for (size_t i = 0; i < d.size(); i++)
+            m[i][i] = d[i];
+        return m;
+    }
+
     /**
      * Function applies cross product to two 3d vectors. u x v = w 
      *
@@ -78,7 +113,7 @@ namespace gauss
         if(A[0].empty() || A[0].size() != B.size())
             return C;
 
-        C = CreateMatrix(A.size(), B[0].size());
+        C = Matrix(A.size(), B[0].size());
         for (size_t i = 0; i < A.size(); i++)
         {
             for (size_t jj = 0; jj < C[i].size(); jj++)
