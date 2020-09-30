@@ -1,11 +1,31 @@
 #ifndef _G_GAUSS_HPP_
 #define _G_GAUSS_HPP_
 #include <vector>
+#include <math.h>
 
 namespace gauss
 {
     typedef std::vector<double> vec;
     typedef std::vector<std::vector<double> > matrix;
+
+    /**
+     * Function find the vector norm
+     *
+     * @param v Vector to use for the norm computation.
+     * @return A scalar that give the value of the norm.
+     */
+    double VectorNorm(vec v)
+    {
+        double n = 0;
+        if (!v.empty())
+        {
+            for (int i = 0; i < v.size(); i++)
+                n += v[i] * v[i];
+        }
+        n = pow(n, 1.0/(double)(v.size()));
+
+        return n;
+    }
 
     /**
      * Function applies cross product to two 3d vectors. u x v = w
@@ -126,6 +146,11 @@ namespace gauss
         }
 
         return C;
+    }
+
+    double VectorsAngle(vec a, vec b)
+    {
+
     }
 }
 
