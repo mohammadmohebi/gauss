@@ -38,3 +38,5 @@ gauss::matrix C = gauss::MatrixMulti(A, B);
 - Cross product
 - Dot product
 - Matrix multiplication
+
+More features are going to be developed.
