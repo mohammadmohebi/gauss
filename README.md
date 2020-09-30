@@ -28,3 +28,15 @@ gauss::matrix B {
 gauss::matrix C = gauss::MatrixMulti(A, B);
 
 ```
+
+## Features
+
+- Vector
+- Matrix
+- Identity matrix
+- Diagonal matrix
+- Cross product
+- Dot product
+- Matrix multiplication
+
+More features are going to be developed.
