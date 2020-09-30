@@ -32,6 +32,8 @@ gauss::matrix C = gauss::MatrixMulti(A, B);
 ## Features
 
 - Vector
+- Vector norm
+- Angle between two vector
 - Matrix
 - Identity matrix
 - Diagonal matrix

@@ -7,7 +7,7 @@ namespace gauss
 {
     typedef std::vector<double> vec;
     typedef std::vector<std::vector<double> > matrix;
-
+    #define GAUSS_PI 3.14159265358979324
     /**
      * Function find the vector norm
      *
@@ -22,7 +22,7 @@ namespace gauss
             for (int i = 0; i < v.size(); i++)
                 n += v[i] * v[i];
         }
-        n = pow(n, 1.0/(double)(v.size()));
+        n = sqrt(n);
 
         return n;
     }
@@ -121,9 +121,16 @@ namespace gauss
         return k;
     }
 
-    /*
-    
-    */
+    /** 
+     * Multiplication between two matrices A and B. Number of 
+     * column in A should be equal to number of row in B ( A: q by n, B: n by b )
+     * 
+     * @param A Left matrix for the multiplication.
+     * @param B Right matrix for the multiplication.
+     * 
+     * @return Result of the multiplication. The matrix has a shape of q by b if A is
+     * q by n and B is n by b.
+     */
     matrix MatrixMulti(matrix A, matrix B)
     {
         matrix C;
@@ -148,9 +155,29 @@ namespace gauss
         return C;
     }
 
-    double VectorsAngle(vec a, vec b)
+    /**
+     * Find angle between two vector.
+     *
+     * @param a First vector.
+     * @param b Second vector.
+     * @param degree If the result should be in degree or radion (default radian).
+     *
+     * @return Angle between vector a and b in radian by default. The result angle is
+     * between 0 and PI.
+     *
+     */
+    double VectorsAngle(vec a, vec b, bool degree = false)
     {
+        double na = VectorNorm(a);
+        double nb = VectorNorm(b);
+        double dot_ab = DotProduct(a, b);
 
+        double angle = acos(dot_ab / (na * nb));
+
+        if(degree)
+            angle = (angle * 180.0) / GAUSS_PI;
+
+        return angle;
     }
 }
 

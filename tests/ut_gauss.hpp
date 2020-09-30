@@ -102,6 +102,27 @@ namespace gauss
 
         }
 
+        void Test_VectorNorm()
+        {
+            std::cout << "VectorNorm:" << std::endl;
+            
+            vec v = {3, 4};
+            assert((VectorNorm(v) == 5.0) && "VectorNorm: wrong result");
+            std::cout << "    PASS: enteger result" << std::endl;
+
+            v = { 2, 4, 5 };
+            assert((abs(6.708203932499369 - VectorNorm(v)) < 0.00000000000001) && "VectorNorm: wrong result");
+            std::cout << "    PASS: decimal result" << std::endl;
+
+            v = { 2, -4, -5 };
+            assert((abs(6.708203932499369 - VectorNorm(v)) < 0.00000000000001) && "VectorNorm: wrong result");
+            std::cout << "    PASS: negative component" << std::endl;
+
+            v = { 25.5, -23.33, -6488.566655 };
+            assert((abs(6488.658703867687 - VectorNorm(v)) < 0.00000000001) && "VectorNorm: wrong result");
+            std::cout << "    PASS: decimal components" << std::endl;
+        }
+
         void Test_Speed()
         {
             std::cout << "__Speed__:" << std::endl;
@@ -120,7 +141,6 @@ namespace gauss
             begin = std::chrono::steady_clock::now();
             auto C = MatrixMulti(A, B);
             end = std::chrono::steady_clock::now();
-
             std::cout << "    Matrix multiplication: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms" << std::endl;
         }
 
@@ -136,6 +156,9 @@ namespace gauss
             std::cout << std::endl;
 
             Test_MatrixMulti();
+            std::cout << std::endl;
+
+            Test_VectorNorm();
             std::cout << std::endl;
 
             Test_Speed();
