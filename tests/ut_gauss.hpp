@@ -123,6 +123,22 @@ namespace gauss
             std::cout << "    PASS: decimal components" << std::endl;
         }
 
+        void Test_VectorsAngle()
+        {
+            std::cout << "VectorAngle:" << std::endl;
+            vec a = {2,  3, 4};
+            vec b = {1, 15, 7};
+
+            assert((abs(0.573810193511548 - VectorsAngle(a, b)) < 0.00000000000001) && "VectorAngle: wrong result");
+            std::cout << "    PASS: integer components" << std::endl;
+
+            a = { 2.512 ,  3.55  ,  -4.555 };
+            b = { 1.2323, -5.6464, 856.66  };
+            assert((abs(2.383877669830448 - VectorsAngle(a, b)) < 0.00000000000001) && "VectorAngle: wrong result");
+            std::cout << "    PASS: decimal and negative components" << std::endl;
+
+        }
+
         void Test_Speed()
         {
             std::cout << "__Speed__:" << std::endl;
@@ -159,6 +175,9 @@ namespace gauss
             std::cout << std::endl;
 
             Test_VectorNorm();
+            std::cout << std::endl;
+
+            Test_VectorsAngle();
             std::cout << std::endl;
 
             Test_Speed();
