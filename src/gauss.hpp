@@ -163,7 +163,7 @@ namespace gauss
      * @param degree If the result should be in degree or radion (default radian).
      *
      * @return Angle between vector a and b in radian by default. The result angle is
-     * between 0 and PI.
+     * between -PI and PI.
      *
      */
     double VectorsAngle(vec a, vec b, bool degree = false)
