@@ -186,13 +186,37 @@ namespace gauss
             assert((M.size() == M2.size()) && "MatrixSwapCol: matrix size has beend altered");
             std::cout << "    PASS: row size unchanged" << std::endl;
 
-            assert((M[0].size() == M2[0].size()) && "MatrixSwapCol: matrix size has beend altered");
+            
             std::cout << "    PASS: column size unchanged" << std::endl;
         }
 
         void Test_MatrixDet()
         {
             std::cout << "MatrixDet:" << std::endl;
+
+            matrix M{
+                {4, 8,  12, 16.0  },
+                {1, 5,  -9, 13.0  },
+                {3, 7,  11,  0.011},
+                {2, 6,  10, 14.0  },
+            };
+
+            assert((abs(2158.416 - MatrixDet(M)) < GAUSS_MIN_DBL) && "MatrixDet: wrong matrix determinant");
+            std::cout << "    PASS: compute 4x4 matrix" << std::endl;
+
+            M = {
+                { -11.62 ,-18.84 ,-19.70 ,  1.96 ,-17.14 ,-11.93 ,-10.64 , -2.88 },
+                { -11.23 , -5.73 ,-16.34 ,  0.60 ,-13.86 , -8.44 ,-10.34 ,-13.80 },
+                { -19.35 , -7.69 ,  0.33 ,  0.14 , -3.59 , -1.49 ,-10.77 ,-10.21 },
+                { -19.62 , -6.11 ,-14.92 , -7.14 ,-12.57 , -1.61 , -9.40 ,-10.59 },
+                { -18.61 ,-14.40 , -4.16 , -1.04 , -1.70 ,-19.91 ,-17.65 , -3.05 },
+                { -10.52 , -7.88 , -9.32 , -6.97 ,-20.00 ,-14.46 ,  1.76 ,-19.42 },
+                {   1.97 , -2.52 ,-10.07 , -9.65 , -9.70 ,-17.38 , -1.48 , -9.81 },
+                { -12.95 ,-10.41 ,-13.26 ,-10.81 , -0.54 ,-12.43 , -2.22 , -9.17 },
+            };
+
+            assert((abs(-1614606194.6208825458 - MatrixDet(M)) < 0.000001) && "MatrixDet: wrong matrix determinant");
+            std::cout << "    PASS: compute 8x8 matrix, negative and decimal values" << std::endl;
         }
 
         void Test_Speed()
@@ -214,6 +238,13 @@ namespace gauss
             auto C = MatrixMulti(A, B);
             end = std::chrono::steady_clock::now();
             std::cout << "    Matrix multiplication: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms" << std::endl;
+
+
+            auto M = Matrix(200, 200, 2.5);
+            begin = std::chrono::steady_clock::now();
+            double v = MatrixDet(M);
+            end = std::chrono::steady_clock::now();
+            std::cout << "    Matrix determinant: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms" << std::endl;
         }
 
         void TestAll()
@@ -240,6 +271,9 @@ namespace gauss
             std::cout << std::endl;
 
             Test_MatrixSwapRow();
+            std::cout << std::endl;
+
+            Test_MatrixDet();
             std::cout << std::endl;
 
             Test_Speed();

@@ -123,8 +123,13 @@ namespace gauss
         }
     }
 
-    /*
-    
+    /**
+    * Function that compute a matrix determinant using Gauss-Jordan Elimination.
+    * The determinant is the product of the diagonal once the algorithm is applied
+    * to the original matrix.
+    *
+    * @param m Source matrix for the computation.
+    *
     */
     double MatrixDet(const matrix& m)
     {
@@ -138,7 +143,7 @@ namespace gauss
                 size_t jj = i;
                 for (size_t j = i + 1; j < tm.size(); j++)
                 {
-                    if(abs(tm[j][j]) > abs(tm[jj][i]))
+                    if(abs(tm[j][i]) > abs(tm[jj][i]))
                         jj = j;
                 }
 
