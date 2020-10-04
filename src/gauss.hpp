@@ -8,8 +8,10 @@ namespace gauss
     typedef std::vector<double> vec;
     typedef std::vector<std::vector<double> > matrix;
     #define GAUSS_PI 3.14159265358979324
+    #define GAUSS_MIN_DBL DBL_MIN
+
     /**
-     * Function find the vector norm
+     * Function find the vector norm.
      *
      * @param v Vector to use for the norm computation.
      * @return A scalar that give the value of the norm.
@@ -28,7 +30,7 @@ namespace gauss
     }
 
     /**
-     * Function applies cross product to two 3d vectors. u x v = w
+     * Function applies cross product to two 3d vectors. u x v = w.
      *
      * @param row Number of row for the matrix.
      * @param col Number of column for the matrix.
@@ -50,7 +52,7 @@ namespace gauss
     }
 
     /**
-     * Function that create an identity matrix of size n
+     * Function that create an identity matrix of size n.
      *
      * @param n Size of matrix (n x n square matrix).
      * @return n x n square matrix wiht ones on the main diagonal.
@@ -84,7 +86,129 @@ namespace gauss
     }
 
     /**
-     * Function applies cross product to two 3d vectors. u x v = w 
+    * Function that swap two column.
+    *
+    * @param m Matrix used during swap.
+    * @param c1 Index of the first column (0 based index).
+    * @param c2 Index of the second column (0 based index).
+    *
+    */
+    void MatrixSwapCol(matrix& m, size_t c1, size_t c2)
+    {
+        if (!m.empty() && c1 < m[0].size() && c2 < m[0].size())
+        {
+            double v1;
+            for (int i = 0; i < m.size(); i++)
+            {
+                v1 = m[i][c1];
+                m[i][c1] = m[i][c2];
+                m[i][c2] = v1;
+            }
+        }
+    }
+
+    /**
+    * Function that swap two row.
+    *
+    * @param m Matrix used during swap.
+    * @param r1 Index of the first row (0 based index).
+    * @param r2 Index of the second row (0 based index).
+    *
+    */
+    void MatrixSwapRow(matrix& m, size_t r1, size_t r2)
+    {
+        if (!m.empty() && r1 < m[0].size() && r1 < m[0].size())
+        {
+            m[r1].swap(m[r2]);
+        }
+    }
+
+    /*
+    
+    */
+    double MatrixDet(const matrix& m)
+    {
+        double det = 0;
+        if (!m.empty() && !m[0].empty() && m.size() == m[0].size())
+        {
+            matrix tm = m;
+            det = 1;
+            for (size_t i = 0; i < tm.size(); i++)
+            {
+                size_t jj = i;
+                for (size_t j = i + 1; j < tm.size(); j++)
+                {
+                    if(abs(tm[j][j]) > abs(tm[jj][i]))
+                        jj = j;
+                }
+
+                if (abs(tm[jj][i]) < GAUSS_MIN_DBL)
+                {
+                    det = 0;
+                    break;
+                }
+
+                if (jj != i)
+                {
+                    MatrixSwapRow(tm, i, jj);
+                    det = -det;
+                }
+                
+                for (size_t j = i + 1; j < tm.size(); ++j)
+                    tm[i][j] /= tm[i][i];
+
+                for (size_t j = 0; j < tm.size(); ++j)
+                {
+                    if (j != i && abs(tm[j][i]) > GAUSS_MIN_DBL)
+                    {
+                        for (size_t ii = i + 1; ii < tm.size(); ++ii)
+                            tm[j][ii] -= tm[i][ii] * tm[j][i];
+                    }
+                }
+
+                det *= tm[i][i];
+            }
+        }
+
+        return det;
+    }
+
+    /**
+     * Multiplication between two matrices A and B. Number of
+     * column in A should be equal to number of row in B ( A: q by n, B: n by b ).
+     *
+     * @param A Left matrix for the multiplication.
+     * @param B Right matrix for the multiplication.
+     *
+     * @return Result of the multiplication. The matrix has a shape of q by b if A is
+     * q by n and B is n by b.
+     */
+    matrix MatrixMulti(const matrix& A, const matrix& B)
+    {
+        matrix C;
+        if (A.empty() || B.empty())
+            return C;
+
+        if (A[0].empty() || A[0].size() != B.size())
+            return C;
+
+        C = Matrix(A.size(), B[0].size());
+        for (size_t i = 0; i < A.size(); i++)
+        {
+            for (size_t jj = 0; jj < C[i].size(); jj++)
+            {
+                double v = 0;
+                for (size_t j = 0; j < A[i].size(); j++)
+                    v += A[i][j] * B[j][jj];
+                C[i][jj] = v;
+            }
+        }
+
+        return C;
+    }
+
+    /**
+     * Function applies cross product to two 3d vectors. u x v = w.
      *
      * @param u First vector of size 3.
      * @param v Second vector of size 3.
@@ -104,7 +228,7 @@ namespace gauss
     }
 
     /**
-     * Function applies dot product to two vectors. u • v = k 
+     * Function applies dot product to two vectors. u • v = k. 
      *
      * @param u First vector for cross product.
      * @param v Second vector for cross product.
@@ -115,44 +239,10 @@ namespace gauss
         double k = 0;
         if (u.size() == v.size())
         {
-            for(int i = 0; i < u.size(); i++)
+            for(size_t i = 0; i < u.size(); i++)
                 k += u[i] * v[i];
         }
         return k;
-    }
-
-    /** 
-     * Multiplication between two matrices A and B. Number of 
-     * column in A should be equal to number of row in B ( A: q by n, B: n by b )
-     * 
-     * @param A Left matrix for the multiplication.
-     * @param B Right matrix for the multiplication.
-     * 
-     * @return Result of the multiplication. The matrix has a shape of q by b if A is
-     * q by n and B is n by b.
-     */
-    matrix MatrixMulti(matrix A, matrix B)
-    {
-        matrix C;
-        if(A.empty() || B.empty())
-            return C;
-
-        if(A[0].empty() || A[0].size() != B.size())
-            return C;
-
-        C = Matrix(A.size(), B[0].size());
-        for (size_t i = 0; i < A.size(); i++)
-        {
-            for (size_t jj = 0; jj < C[i].size(); jj++)
-            {
-                double v = 0;
-                for (size_t j = 0; j < A[i].size(); j++)
-                    v += A[i][j] * B[j][jj];
-                C[i][jj] = v;
-            }
-        }
-
-        return C;
     }
 
     /**

@@ -139,6 +139,62 @@ namespace gauss
 
         }
 
+        void Test_MatrixSwapCol()
+        {
+            std::cout << "MatrixSwapCol:" << std::endl;
+
+            matrix M{
+                {1, 5,  9, 13},
+                {2, 6, 10, 14},
+                {3, 7, 11, 15},
+                {4, 8, 12, 16},
+            };
+
+            matrix M2 = M;
+
+            MatrixSwapCol(M, 1, 3);
+            for (size_t i = 0; i < M[0].size(); i++)
+                assert((M[i][1] == M2[i][3]) && "MatrixSwapCol: wrong swap");
+            std::cout << "    PASS: column swap" << std::endl;
+
+            assert((M.size() == M2.size()) && "MatrixSwapCol: matrix size has beend altered");
+            std::cout << "    PASS: row size unchanged" << std::endl;
+
+            assert((M[0].size() == M2[0].size()) && "MatrixSwapCol: matrix size has beend altered");
+            std::cout << "    PASS: column size unchanged" << std::endl;
+        }
+
+        void Test_MatrixSwapRow()
+        {
+            std::cout << "MatrixSwapRow:" << std::endl;
+
+            matrix M{
+                {1, 5,  9, 13},
+                {2, 6, 10, 14},
+                {3, 7, 11, 15},
+                {4, 8, 12, 16},
+            };
+
+            matrix M2 = M;
+
+            MatrixSwapRow(M, 1, 3);
+            for (size_t i = 0; i < 4; i++)
+                assert((M[1][i] == M2[3][i]) && "MatrixSwapCol: wrong swap");
+
+            std::cout << "    PASS: row swap" << std::endl;
+
+            assert((M.size() == M2.size()) && "MatrixSwapCol: matrix size has beend altered");
+            std::cout << "    PASS: row size unchanged" << std::endl;
+
+            assert((M[0].size() == M2[0].size()) && "MatrixSwapCol: matrix size has beend altered");
+            std::cout << "    PASS: column size unchanged" << std::endl;
+        }
+
+        void Test_MatrixDet()
+        {
+            std::cout << "MatrixDet:" << std::endl;
+        }
+
         void Test_Speed()
         {
             std::cout << "__Speed__:" << std::endl;
@@ -178,6 +234,12 @@ namespace gauss
             std::cout << std::endl;
 
             Test_VectorsAngle();
+            std::cout << std::endl;
+
+            Test_MatrixSwapCol();
+            std::cout << std::endl;
+
+            Test_MatrixSwapRow();
             std::cout << std::endl;
 
             Test_Speed();
