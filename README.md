@@ -40,5 +40,7 @@ gauss::matrix C = gauss::MatrixMulti(A, B);
 - Cross product
 - Dot product
 - Matrix multiplication
+- Matrix determinant
+- Matrix row and column swap
 
 More features are going to be developed.
